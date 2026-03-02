@@ -1,0 +1,119 @@
+#include <iostream>
+using namespace std;
+
+const int M = 50, N = 50; // максимальні розміри матриці
+
+// ===== Прототипи функцій =====
+void get_matr(int in_matr[M][N], int & in_m, int & in_n);
+void show_matr(const int out_matr[M][N], const int m, const int n);
+
+// Завдання 1 (Matrix22)
+int col_sum(const int matr[M][N], const int m, const int n, int j);
+void task1();
+
+// Завдання 2 (Matrix55)
+void change_matr(int matr[M][N], int & m, int & n);
+void task2();
+
+// ===== Головна функція =====
+int main() {
+    int num;
+    do {
+        cout << "-------------------------" << endl;
+        cout << "Номер завдання (1-2, 0-вихід) -> ";
+        cin >> num;
+        switch(num) {
+            case 0:
+                cout << "Вихід..." << endl;
+                break;
+            case 1:
+                task1();
+                break;
+            case 2:
+                task2();
+                break;
+            default:
+                cout << "Неправильний номер завдання!" << endl;
+        }
+    } while(num != 0);
+}
+
+// ===== Функція введення матриці =====
+void get_matr(int in_matr[M][N], int & in_m, int & in_n) {
+    do {
+        cout << "Введіть кількість рядків (2-50): ";
+        cin >> in_m;
+        cout << "Введіть кількість стовпців (2-50): ";
+        cin >> in_n;
+    } while (in_m < 2 || in_m > M || in_n < 2 || in_n > N);
+
+    cout << "Введіть елементи:" << endl;
+    for (int i = 0; i < in_m; i++)
+        for (int j = 0; j < in_n; j++)
+            cin >> in_matr[i][j];
+}
+
+// ===== Функція виведення матриці =====
+void show_matr(const int out_matr[M][N], const int m, const int n) {
+    cout << endl << "Матриця:" << endl;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++)
+            cout << out_matr[i][j] << "\t";
+        cout << endl;
+    }
+}
+
+// ===== Завдання 1 (Matrix22) =====
+
+// Сума елементів j-го стовпця
+int col_sum(const int matr[M][N], const int m, const int n, int j) {
+    int s = 0;
+    for (int i = 0; i < m; i++) {
+        s += matr[i][j];
+    }
+    return s;
+}
+
+void task1() {
+    int matr[M][N];
+    int row, col;
+
+    get_matr(matr, row, col);
+    show_matr(matr, row, col);
+
+    cout << endl << "Суми елементів парних стовпців:" << endl;
+
+    for (int j = 1; j < col; j += 2) { // без if
+        cout << "Стовпець " << j + 1 << ": "
+             << col_sum(matr, row, col, j) << endl;
+    }
+}
+
+// ===== Завдання 2 (Matrix55) =====
+
+// Міняємо місцями верхню і нижню половини матриці
+void change_matr(int matr[M][N], int & m, int & n) {
+    for (int i = 0; i < m / 2; i++) {
+        for (int j = 0; j < n; j++) {
+            int temp = matr[i][j];
+            matr[i][j] = matr[i + m / 2][j];
+            matr[i + m / 2][j] = temp;
+        }
+    }
+}
+
+void task2() {
+    int matr[M][N];
+    int row, col;
+
+    do {
+        get_matr(matr, row, col);
+    } while (row % 2 != 0); // M має бути парним
+
+    show_matr(matr, row, col);
+
+    change_matr(matr, row, col);
+
+    cout << endl << "Матриця після заміни половин:" << endl;
+    show_matr(matr, row, col);
+}
